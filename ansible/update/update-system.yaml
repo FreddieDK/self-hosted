@@ -36,7 +36,7 @@
         url: "https://discord.com/api/webhooks/1165248989256482866/QpwyRisZOjmtIfOnO__bjWaBPpW56lm2ogu9B0yU_eMwRQLq58YQlPiWkae4cfrp5e8u"
         method: POST
         body_format: json
-        body: '{"content": "your-message"}'
+        body: '{"content": "Reboot is required on {{ inventory_hostname }}"}'
         headers:
           Content-Type: application/json
         status_code: 204
