@@ -9,13 +9,13 @@
       shell: df -h / | awk 'NR==2 {print $5}'
       register: disk_usage
 
-     - name: send discord message when disk space is over 80%
-       uri:
-         url: "https://discord.com/api/webhooks/1165248989256482866/QpwyRisZOjmtIfOnO__bjWaBPpW56lm2ogu9B0yU_eMwRQLq58YQlPiWkae4cfrp5e8u"
-         method: POST
-         body_format: json
-         body: '{"content": "Disk space on {{ inventory_hostname }} is above 80%!"}'
-         headers:
-           Content-Type: application/json
-         status_code: 204
-       when: disk_usage.stdout[:-1]|int > 80
+    - name: send discord message when disk space is over 80%
+      uri:
+        url: "https://discord.com/api/webhooks/1165248989256482866/QpwyRisZOjmtIfOnO__bjWaBPpW56lm2ogu9B0yU_eMwRQLq58YQlPiWkae4cfrp5e8u"
+        method: POST
+        body_format: json
+        body: '{"content": "Disk space on {{ inventory_hostname }} is above 80%!"}'
+        headers:
+          Content-Type: application/json
+        status_code: 204
+      when: disk_usage.stdout[:-1]|int > 80
