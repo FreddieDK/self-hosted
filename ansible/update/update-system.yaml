@@ -1,6 +1,7 @@
 ---
 - name: Update and upgrade apt packages
   hosts: all 
+  become: yes
   tasks:
     - name: Update packages with apt
       when: ansible_pkg_mgr == 'apt'
@@ -25,19 +26,11 @@
         state: latest
         exclude: kernel*
 
-- name: check if system reboot is required
-  hosts: "{{ hosts }}"
-  become: yes
-  tasks:
     - name: check if system reboot is required
-      become: true
       stat:
         path: /var/run/reboot-required
       register: reboot_required
 
-- name: notify discord
-  hosts: "{{ hosts }}"
-  tasks:
     - name: send discord message
       uri:
         url: "https://discord.com/api/webhooks/1165248989256482866/QpwyRisZOjmtIfOnO__bjWaBPpW56lm2ogu9B0yU_eMwRQLq58YQlPiWkae4cfrp5e8u"
