@@ -1,13 +1,8 @@
 ---
-- name: clean docker
+- name: docker clean
   hosts: all
+  become: yes
+
   tasks:
-    - name: prune non-dangling images
-      community.docker.docker_prune:
-        containers: false
-        images: true
-        images_filters:
-          dangling: false
-        networks: false
-        volumes: false
-        builder_cache: false
+    - name: docker clean
+      shell: "docker image prune -a -f"
