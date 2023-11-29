@@ -1,4 +1,4 @@
-- name: Restart all servers
+- name: restart servers
   hosts: all
   become: yes
 
