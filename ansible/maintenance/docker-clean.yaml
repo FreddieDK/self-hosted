@@ -5,4 +5,4 @@
 
   tasks:
     - name: docker clean
-      shell: "docker image prune -a -f --volumes"
+      shell: "docker image prune -a -f -v"
