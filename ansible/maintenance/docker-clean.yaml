@@ -1,16 +1,8 @@
 ---
-- name: clean up docker images
-  hosts: <mydockerhosts || all>
-  gather_facts: no
-  collections:
-  - community.docker
+- name: docker clean
+  hosts: all
+  become: yes
+
   tasks:
-	- name: prune docker caches
-	  community.docker.docker_prune:
-		containers: yes
-		images: yes
-		images_filters:
-		  dangling: false
-		networks: yes
-		volumes: yes
-		builder_cache: yes
+    - name: docker clean
+      shell: "docker image prune -a -f --volumes"
