@@ -1,9 +1,9 @@
 ---
 - name: clean up docker images
-  hosts: all
+  hosts: <mydockerhosts || all>
   gather_facts: no
   collections:
-	- community.docker
+  - community.docker
   tasks:
 	- name: prune docker caches
 	  community.docker.docker_prune:
