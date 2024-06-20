@@ -1,0 +1,25 @@
+---
+- name: Check Logical Volumes on a Server
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Gather logical volume information
+      lvg_facts:
+        vg: "{{ item }}"
+      with_items: "{{ ansible_lvm.vgs.keys() }}"
+      register: lvm_info
+
+    - name: Print logical volume details
+      debug:
+        msg: "Volume Group: {{ item.item }} Logical Volumes: {{ item.lvm_info }}"
+      with_items: "{{ lvm_info.results }}"
+      when: item.lvm_info is defined and item.lvm_info.lvs is defined
+
+    - name: Ensure logical volumes are present
+      assert:
+        that:
+          - lvm_info.results | length > 0
+        fail_msg: "No logical volumes found on the server."
+        success_msg: "Logical volumes found on the server."
