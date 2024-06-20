@@ -5,21 +5,25 @@
   gather_facts: yes
 
   tasks:
-    - name: Gather logical volume information
-      lvg_facts:
-        vg: "{{ item }}"
-      with_items: "{{ ansible_lvm.vgs.keys() }}"
-      register: lvm_info
+    - name: Gather volume group information
+      command: vgs --noheadings --units m -o vg_name,vg_size,vg_free
+      register: vg_info
 
-    - name: Print logical volume details
+    - name: Print volume group information
       debug:
-        msg: "Volume Group: {{ item.item }} Logical Volumes: {{ item.lvm_info }}"
-      with_items: "{{ lvm_info.results }}"
-      when: item.lvm_info is defined and item.lvm_info.lvs is defined
+        var: vg_info.stdout_lines
+
+    - name: Gather logical volume information
+      command: lvs --noheadings --units m -o lv_name,lv_size,vg_name
+      register: lv_info
+
+    - name: Print logical volume information
+      debug:
+        var: lv_info.stdout_lines
 
     - name: Ensure logical volumes are present
       assert:
         that:
-          - lvm_info.results | length > 0
+          - lv_info.stdout_lines | length > 0
         fail_msg: "No logical volumes found on the server."
         success_msg: "Logical volumes found on the server."
